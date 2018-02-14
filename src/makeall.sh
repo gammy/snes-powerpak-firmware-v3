@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 set -e
 path_out=out/POWERPAK
+export PATH=$PATH:./tools/
 
 echo "-- ASSEMBLING SNES POWERPAK SOFTWARE --"
 
@@ -17,8 +18,7 @@ dd status=none if=/dev/zero of=${path_out}/ERROR.LOG bs=2K  count=1
 #cp TOPLEVEL.BIT out/POWERPAK/TOPLEVEL.BIT
 
 echo "Preparing soundbank"
-wine snesmod/smconv.exe -s -o soundbnk "music/parforceritt_b2_downsampled.it"
-mv soundbnk.bank soundbnk.bnk
+smconv.exe -s -o soundbnk "music/parforceritt_b2_downsampled.it"
 
 echo -e "[objects]\nbootrom.o\n" > bootrom.lnk
 
