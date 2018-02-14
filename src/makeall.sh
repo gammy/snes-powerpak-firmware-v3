@@ -20,7 +20,7 @@ echo "Preparing soundbank"
 wine snesmod/smconv.exe -s -o soundbnk "music/parforceritt_b2_downsampled.it"
 mv soundbnk.bank soundbnk.bnk
 
-echo -e '[objects]\nbootrom.o' >> bootrom.lnk
+echo -e "[objects]\nbootrom.o\n" > bootrom.lnk
 
 echo "Compiling bootrom"
 wla-65816 -xo bootrom.asm bootrom.o 
@@ -28,9 +28,10 @@ wla-65816 -xo bootrom.asm bootrom.o
 echo "Linking bootrom"
 wlalink -rs bootrom.lnk bootrom.sfc
 
-cp bootrom.sfc out/bootrom.sfc
-cp bootrom.sfc out/POWERPAK/UPDATE.ROM
-rm bootrom.lnk
-rm bootrom.o
+echo "Copying files"
+cp bootrom.sfc out/
+cp bootrom.sfc ${path_out}/UPDATE.ROM
+
+rm bootrom.lnk bootrom.o
 
 echo '-- FINISHED! --'
