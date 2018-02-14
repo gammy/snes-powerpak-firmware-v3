@@ -3,7 +3,7 @@
 |   UNOFFICIAL SNES POWERPAK FIRMWARE V3.00 (CODENAME: "MUFASA")
 |   (c) 2012-2015 by ManuLöwe (http://www.manuloewe.de/)
 |
-|	*** INSTALLATION & USAGE ***
+|    *** INSTALLATION & USAGE ***
 |
 ===========================================================================================
 
@@ -121,21 +121,21 @@ Possible values are:
 Next, here is a desription of the theme (*.THM) file format introduced in v3.00:
 
 -------------------------------------------------------------------------------------------------------------
-BIN FILE NO. - DATA			SIZE (in bytes)		NOTES
+BIN FILE NO. - DATA             SIZE  (in bytes)  NOTES
 -------------------------------------------------------------------------------------------------------------
-#01 - "Small" BG font			2,048	($800)		2bpp ASCII font (128×64 px, 4 colors)
-#02 - "Big" sprite-based font		4,096	($1000)		4bpp ASCII font (128×64 px, 16 colors)
-#03 - Sprite-based main GFX		8,192	($2000)		4bpp image (128×128 px, 16 colors)
-#04 - Cursor/buttons sprite GFX		2,048	($800)		4bpp image (128×32 px, 16 colors)
-#05 - BG font palette			8	($8)		4 colors
-#06 - Main GFX palette			32	($20)		16 colors
-#07 - Cursor/buttons palette		32	($20)		16 colors
-#08 - 5 sprite font palettes		160	($A0)		5 * 16 = 80 colors
-#09 - HDMA BG color gradient		448	($1C0)		224 colors (no color index/scanline no.)
-#10 - Sprite font width table		128	($80)		128 8-bit values
-#11 - "Window" color			2	($2)		2 8-bit values
+#01 - "Small" BG font           2,048 ($800)      2bpp ASCII font (128×64 px, 4 colors)
+#02 - "Big" sprite-based font   4,096 ($1000)     4bpp ASCII font (128×64 px, 16 colors)
+#03 - Sprite-based main GFX     8,192 ($2000)     4bpp image      (128×128 px, 16 colors)
+#04 - Cursor/buttons sprite GFX 2,048 ($800)      4bpp image      (128×32 px, 16 colors)
+#05 - BG font palette           8     ($8)        4 colors
+#06 - Main GFX palette          32    ($20)       16 colors
+#07 - Cursor/buttons palette    32    ($20)       16 colors
+#08 - 5 sprite font palettes    160   ($A0)       5 * 16 = 80 colors
+#09 - HDMA BG color gradient    448   ($1C0)      224 colors (no color index/scanline no.)
+#10 - Sprite font width table   128   ($80)       128 8-bit values
+#11 - "Window" color            2     ($2)        2 8-bit values
 -------------------------------------------------------------------------------------------------------------
-Total theme file size:			17,194	($432A)
+Total theme file size:            17,194    ($432A)
 -------------------------------------------------------------------------------------------------------------
 
 Further notes on theme data:
