@@ -1,0 +1,38 @@
+#!/usr/bin/env bash
+
+path_base="$(pwd)/../"
+path_tools="$path_base/buildtools"
+  path_src="$path_base/src"
+  path_out="$path_src/out/POWERPAK"
+
+export PATH=$PATH:$path_tools
+
+echo "-- ASSEMBLING SNES POWERPAK SOFTWARE --"
+(
+    set -e
+    cd "$path_src"
+
+    echo "Copying static data files"
+    cp -v $path_base/data/* "$path_out/"
+
+    echo "Preparing soundbank"
+    smconv -s -o soundbnk music/parforceritt_b2_downsampled.it
+
+    echo "Compiling bootrom"
+    wla-65816 -x -o bootrom.o bootrom.asm
+    # The argument order changed in v9.5 iirc. It used to be:
+    # wla-65816 -xo bootrom.asm bootrom.o
+
+    echo "Linking bootrom"
+    wlalink -r -s bootrom.lnk bootrom.sfc
+    # The argument order changed in v9.5 iirc. It used to be:
+    # wlalink -rs bootrom.lnk bootrom.sfc
+
+    echo "Copying files"
+    cp bootrom.sfc "$path_out/"
+    cp bootrom.sfc "$path_out/UPDATE.ROM"
+)
+
+echo '-- FINISHED! --'
+echo
+ls -lrt "$path_out"

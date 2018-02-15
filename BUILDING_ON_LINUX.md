@@ -9,10 +9,7 @@ You'll need a number of tools to build this project:
 
 Your linux distribution might have some of these packages available. If not,
 I wrote a little shellscript (placed in `src/`) called `fetch_tools.sh` which
-pulls and builds everything required, except for the wla compiler itself.
-
-On arch/artix/manjaro, wla is available from the AUR: `aur/wla_dx`.
-You'll also need a C compiler (e.g gcc).
+pulls and builds everything required.
 
 # Building
 

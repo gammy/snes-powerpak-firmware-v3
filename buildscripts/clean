@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+
+path_base="$(pwd)/../"
+  path_src="$path_base/src"
+  path_out="$path_src/out/POWERPAK"
+
+(
+    cd $path_src
+    rm *.lst *.sfc *.sym *.tmp *.usage > /dev/null 2>&1
+    cd $path_out
+    rm Valid.ext *.log *.usage > /dev/null 2>&1
+)

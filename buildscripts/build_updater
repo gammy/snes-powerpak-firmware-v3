@@ -1,0 +1,33 @@
+#!/usr/bin/env bash
+path_base="$(pwd)/../"
+path_tools="$path_base/buildtools"
+  path_src="$path_base/src"
+  path_upd="$path_src/updater"
+  path_out="$path_src/out/POWERPAK"
+
+export PATH=$PATH:$path_tools
+
+set -e
+
+(
+    cd "$path_upd"
+
+    for ver in siv1 siv2
+    do
+        echo "Assembling $ver"
+        echo wla-65816 -x -o "$ver.o" "$ver.asm"
+        wla-65816 -x -o "$ver.o" "$ver.asm"
+        # The argument order changed in v9.5 iirc. It used to be:
+        # wla-65816 -xo "$ver.asm" "$ver.o"
+
+        echo wlalink -r -s "$ver.lnk" "$ver.sfc"
+        wlalink -r -s "$ver.lnk" "$ver.sfc"
+        # The argument order changed in v9.5 iirc. It used to be:
+        # wlalink -rs "$ver.lnk" "$ver.sfc"
+    done
+
+    head -c 5120 siv1.sfc > "$path_out/SIv1.MAP"
+    head -c 5120 siv2.sfc > "$path_out/SIv2.MAP"
+)
+
+

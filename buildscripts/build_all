@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+set -e
+bash build_and_fetch_tools
+bash convert_gfx
+bash build_bootrom
+bash build_updater

@@ -1,0 +1,81 @@
+#!/usr/bin/env bash
+# A little helper to get some tools needed to complete the build.
+
+path_base="$(pwd)/../"
+path_tools="$path_base/buildtools"
+
+      url_wla=https://github.com/vhelin/wla-dx
+url_pvsneslib=https://github.com/alekmaul/pvsneslib
+  url_snesdev=https://github.com/gilligan/snesdev
+
+deps=(gcc g++ cmake git)
+fail=
+for dep in ${deps[@]}
+do
+    if ! which $dep > /dev/null
+    then
+        fail=1
+        echo "Missing dependency: $dep" >&2
+    fi
+done
+
+[[ $fail ]] && exit 1
+
+if [ ! -d "$path_base/src" ]
+then
+    echo "Unable to find 'src/' in '$path_base': is this script being run"
+    echo "from the correct path?"
+    exit 1
+fi
+
+set -e
+mkdir -p "$path_tools"
+
+# Clone projects
+(
+    cd "$path_tools"
+
+    for url in $url_wla $url_pvsneslib $url_snesdev
+    do
+        name=$(basename $url)
+        if [ ! -d "$path_tools/$name" ]
+        then
+            git clone $url
+        else
+            echo "Already downloaded: $name"
+        fi
+    done
+)
+
+# Build WLA suite
+echo "Building WLA suite"
+(
+    cd "$path_tools/wla-dx"
+    cmake -G "Unix Makefiles" .
+    make
+    cp binaries/wla-65816 binaries/wlalink "$path_tools/"
+)
+
+(
+    # Build 'smconv' and gfx, which are parts of pvsneslib
+    for tool in smconv gfx2snes
+    do
+        echo "Building $tool"
+        (
+            cd "$path_tools/pvsneslib/tools/${tool}"
+            # pvsneslib stupidly hardcodes the cross compiler path for their
+            # PC. We overwrite the values with our stock compilers
+            sed --in-place -e 's/^CC\s=.*/CC = gcc/' Makefile
+            sed --in-place -e 's/^CP\s=.*/CP = g++/' Makefile
+            make
+            cp ${tool}.exe "$path_tools/$tool"
+        )
+    done
+)
+
+# Build pcx2snes, part of gilligan's snesdev toolkit
+echo "Building pcx2snes"
+gcc -o "$path_tools/pcx2snes" "$path_tools/snesdev/tools/pcx2snes/pcx2snes.c"
+
+echo
+echo "All OK"
