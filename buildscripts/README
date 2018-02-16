@@ -1,6 +1,8 @@
 These are some scripts, originally based on Ramsis' batch files.
 As I work on linux, I've made these tools for that purpose.
+It's all been cobbled together quite quickly: sorry if this is confusing!
 
 I suppose this should all work fine on mingw/cygwin/BSD as well, as long as
 - you run these scripts from within this path (e.g where this file lies)
-- you have the base dependencies: bash, gcc, g++, cmake, make.
+- you have the base dependencies: git, bash, gcc, g++, cmake, make, head, awk.
+

@@ -1,15 +1,11 @@
 #!/usr/bin/env bash
-path_base="$(pwd)/../"
-path_tools="$path_base/buildtools"
-  path_src="$path_base/src"
+source paths.inc || exit 1
 export PATH=$PATH:$path_tools
 
 set -e
 
-path_out="$path_src/gfx-rom"
-
 (
-    cd $path_out
+    cd "$path_gfx"
 
     echo -- CONVERTING SPRITES --
 

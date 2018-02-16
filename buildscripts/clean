@@ -1,8 +1,5 @@
 #!/usr/bin/env bash
-
-path_base="$(pwd)/../"
-  path_src="$path_base/src"
-  path_out="$path_src/out/POWERPAK"
+source paths.inc || exit 1
 
 (
     cd $path_src
@@ -10,3 +7,5 @@ path_base="$(pwd)/../"
     cd $path_out
     rm Valid.ext *.log *.usage > /dev/null 2>&1
 )
+
+exit 0

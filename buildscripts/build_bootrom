@@ -1,19 +1,16 @@
 #!/usr/bin/env bash
-
-path_base="$(pwd)/../"
-path_tools="$path_base/buildtools"
-  path_src="$path_base/src"
-  path_out="$path_src/out/POWERPAK"
-
-export PATH=$PATH:$path_tools
+source paths.inc || exit 1
 
 echo "-- ASSEMBLING SNES POWERPAK SOFTWARE --"
 (
     set -e
+    echo "Bumping build number"
+    bash bump_build_number
+
     cd "$path_src"
 
     echo "Copying static data files"
-    cp -v $path_base/data/* "$path_out/"
+    cp $path_base/data/* "$path_out/"
 
     echo "Preparing soundbank"
     smconv -s -o soundbnk music/parforceritt_b2_downsampled.it
@@ -35,4 +32,5 @@ echo "-- ASSEMBLING SNES POWERPAK SOFTWARE --"
 
 echo '-- FINISHED! --'
 echo
+echo "$path_out:"
 ls -lrt "$path_out"

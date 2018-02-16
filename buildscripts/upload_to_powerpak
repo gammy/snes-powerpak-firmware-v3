@@ -1,0 +1,27 @@
+#!/usr/bin/env bash
+
+source paths.inc || exit 1
+
+mountpoint=$1
+
+if [ -z "$mountpoint" ]
+then
+    me=$(basename $0)
+    echo "Usage: $me <Powerpak CF card mountpoint>"
+    echo "Example: $me /mnt/cf_card"
+    exit 0
+fi
+
+set -e
+
+echo
+bakname="POWERPAK.$(date +"%y%m%d.%H%M%S").tgz"
+echo "Making a backup: $bakname"
+tar cvfz "$bakname" "$mountpoint/POWERPAK/"
+
+echo
+echo "Copying content"
+rsync -av "$path_out/" "$mountpoint/POWERPAK/"
+
+echo
+echo "OK"

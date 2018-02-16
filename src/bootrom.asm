@@ -117,7 +117,7 @@ STR_Firmware_Version:
 	.DB "Firmware v"
 
 STR_Firmware_VerNum:
-	.DB "3.00"
+	.DB "3.05"
 
 STR_Firmware_VerNum_End:
 	.DB " "
@@ -129,7 +129,7 @@ STR_Firmware_Build:
 	.DB "Build #"
 
 STR_Firmware_BuildNum:
-	.DB "11348"
+	.DB "11362"							; IdentifierCommentForBuildNumAutoBump (do not remove this comment)
 
 STR_Firmware_BuildNum_End:
 	.DB 0

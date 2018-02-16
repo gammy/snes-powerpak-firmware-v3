@@ -1,10 +1,5 @@
 #!/usr/bin/env bash
-path_base="$(pwd)/../"
-path_tools="$path_base/buildtools"
-  path_src="$path_base/src"
-  path_upd="$path_src/updater"
-  path_out="$path_src/out/POWERPAK"
-
+source paths.inc || exit 1
 export PATH=$PATH:$path_tools
 
 set -e

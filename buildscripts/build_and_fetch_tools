@@ -1,12 +1,17 @@
 #!/usr/bin/env bash
 # A little helper to get some tools needed to complete the build.
-
-path_base="$(pwd)/../"
-path_tools="$path_base/buildtools"
+source paths.inc || exit 1
 
       url_wla=https://github.com/vhelin/wla-dx
 url_pvsneslib=https://github.com/alekmaul/pvsneslib
   url_snesdev=https://github.com/gilligan/snesdev
+
+# Commit 063b241a90e496e3181176bdaaa92d92bf1ebb9a introduced some new 
+# label tests which break the POWERPAK build; it yields this error when 
+# linking the bootrom:
+# bootrom.o:lib_snesmod.inc.asm:459: FIX_REFERENCES: Reference to an unknown label "spcFlush1@exit".
+# So I'm resorting to checking out the commit prior to this for now (Feb 16, 2018)
+wla_revision=3c2c8911f5617ace69c515369a876604b4e116d6
 
 deps=(gcc g++ cmake git)
 fail=
@@ -51,6 +56,7 @@ mkdir -p "$path_tools"
 echo "Building WLA suite"
 (
     cd "$path_tools/wla-dx"
+    git checkout "$wla_revision"
     cmake -G "Unix Makefiles" .
     make
     cp binaries/wla-65816 binaries/wlalink "$path_tools/"

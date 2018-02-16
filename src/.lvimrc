@@ -1,0 +1,7 @@
+" .lvimrc, read by https://github.com/embear/vim-localvimrc
+" As dictated in ASSEMBLING THE SOURCE in How To Use.txt,
+" '... tabulator size of 8 (comments usually sit on column 73) '
+set shiftwidth=8
+set tabstop=8
+set noexpandtab
+

@@ -1,0 +1,106 @@
+#!/usr/bin/env bash
+source paths.inc || exit 1
+
+path_theme=$1
+
+if [ -z "$path_theme" ]
+then
+    me=$(basename $0)
+    echo "Usage: $me <Theme directory path>"
+    echo "Example: $me ../themes/foo"
+    exit 0
+fi
+
+if [ ! -d "$path_theme" ]
+then
+    echo "$path_theme: Directory not found" >&2
+    exit 1
+fi
+
+files=(
+    "${path_theme}/01-font_bg.pcx"
+    "${path_theme}/02-font_sprite.bmp"
+    "${path_theme}/03-gfx_main.pcx"
+    "${path_theme}/04-gfx_cursorbuttons.pcx"
+    "${path_tpl}/template.05.bin"
+# 06 generated from users 03
+# 07 generated from users 04
+    "${path_tpl}/template.08.bin"
+    "${path_tpl}/template.09.bin"
+    "${path_tpl}/template.10.bin"
+    "${path_tpl}/template.11.bin"
+)
+
+theme_name=$(basename $path_theme)
+theme_out="${theme_name}.THM"
+
+set -e
+
+missing=
+for infile in ${files[@]}
+do
+    if [ ! -f "$infile" ]
+    then
+        missing=1
+        echo "Missing theme input file: $infile" >&2
+    fi
+done
+
+if [ $missing ]
+then
+    echo "Theme files missing. Stop." >&2
+    exit 1
+fi
+
+path_work=$(mktemp -d)
+
+files_out=(
+    "${path_work}/01-font_bg.pic"
+    "${path_work}/02-font_sprite.pic"
+    "${path_work}/03-gfx_main.pic"
+    "${path_work}/04-gfx_cursorbuttons.pic"
+    "${path_work}/template.05.bin"
+    "${path_work}/03-gfx_main.pal"
+    "${path_work}/04-gfx_cursorbuttons.pal"
+    "${path_work}/template.08.bin"
+    "${path_work}/template.09.bin"
+    "${path_work}/template.10.bin"
+    "${path_work}/template.11.bin"
+)
+
+echo
+echo "Work path: $path_work"
+echo
+
+echo "Copying files"
+cp -v ${files[@]} "$path_work/"
+
+echo "Processing images"
+(
+    cd "$path_work"
+    for infile in ${files[@]}
+    do
+        filetype=$(echo $infile | awk -F . '{print $NF}')
+        filename=$(basename "$infile")
+        if [ "$filetype" != "bin" ]
+        then
+            echo "$filename"
+            echo gfx2snes -q -gs8 -mR! -pc16 -po16 -f${filetype} -n "$filename"
+            gfx2snes -q -gs8 -mR! -pc16 -po16 -f${filetype} -n "$filename"
+        fi
+    done
+)
+
+echo "Processing fonts"
+(
+    cd "$path_work"
+    pcx2snes "01-font_bg" -n -s8 -c4 -o0                                                 
+    gfx2snes -q -gs8 -mR! -p! -pc16 -fbmp -n "02-font_sprite.bmp"
+)
+
+echo "Generating $theme_out"
+wc -c ${files_out[@]}
+cat ${files_out[@]} > "${path_theme}/${theme_out}"
+
+wc -c "${path_theme}/${theme_out}"
+rm -r "$path_work"
