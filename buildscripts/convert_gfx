@@ -1,6 +1,5 @@
 #!/usr/bin/env bash
 source paths.inc || exit 1
-export PATH=$PATH:$path_tools
 
 set -e
 
