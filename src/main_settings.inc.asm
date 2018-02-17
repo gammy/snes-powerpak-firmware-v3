@@ -135,9 +135,11 @@ SettingsLoop:
 
 
 
-; -------------------------- check for A button = make a selection
-	lda	Joy1New
-	and	#%10000000
+; -------------------------- check for Y button = make a selection
+;	lda	Joy1New
+;	and	#%10000000						; A button
+	lda	Joy1New+1
+	and	#%01000000						; Y button
 	beq	+
 	bra	CheckSelection
 +
@@ -243,22 +245,30 @@ CheckForUpdate:
 
 	Accu16
 
-	lda	#STR_Firmware_Codename					; look for "MUFASA"
+	lda	#STR_Firmware_Codename_Signature			; look for "MUFASA"
 	and	#$7FFF							; mask off SNES LoROM address gap ($8000)
 	inc	a							; skip quotes
 	tax
 	lda	sectorBuffer1, x
+
+	;  4f42 5256 4c49
+	;   o b  r v  l i
+	;  554d 4146 4153
+	;   u m  a f  a s
 	cmp	#$554D							; MU
+;	cmp	#$4F42							; BO
 	bne	+
 	inx
 	inx
 	lda	sectorBuffer1, x
 	cmp	#$4146							; FA
+;	cmp	#$5256							; VR
 	bne	+
 	inx
 	inx
 	lda	sectorBuffer1, x
 	cmp	#$4153							; SA
+;	cmp	#$4C49							; IL
 	beq	__UpdateRomIsValid
 
 +	Accu8
@@ -267,7 +277,7 @@ CheckForUpdate:
 	jsr	SpriteMessageError
 
 	SetCursorPos 20, 1
-	PrintString "UPDATE.ROM is not a valid \"MUFASA\" firmware file.\n"
+	PrintString "UPDATE.ROM is not a valid MUFASA\/BOVRIL firmware file.\n"
 	PrintString "  Press any button ..."
 
 	jmp	__WaitBeforeReturn

@@ -79,7 +79,7 @@ GotoDevNote:
 	SetCursorPos 15+32, 0
 	PrintString "Long live the SNES PowerPak!\n\n"
 	PrintString "(c) 2012-2016 by Ramsis\nhttp://manuloewe.de/\n"
-	PrintString "Minor mods by gammy"
+	PrintString "BOVRIL build by gammy (github.com/gammy)"
 	SetCursorPos 21+32, 2
 	PrintString " Back"
 	SetCursorPos 21+32, 10
@@ -140,9 +140,11 @@ DevNoteLoop:
 
 
 
-; -------------------------- check for A button = toggle "page" switching
-	lda	Joy1New
-	and	#%10000000
+; -------------------------- check for Y button = toggle "page" switching
+;	lda	Joy1New
+;	and	#%10000000						; A button
+	lda	Joy1New+1
+	and	#%01000000						; Y button
 	beq	++
 	lda	temp+7							; what page are we on?
 	cmp	#$01
@@ -170,9 +172,11 @@ DevNoteLoop:
 
 
 
-; -------------------------- check for Y button = fade out music
-	lda	Joy1New+1
-	and	#%01000000
+; -------------------------- check for A button = fade out music
+;	lda	Joy1New+1
+;	and	#%01000000						; Y button
+	lda	Joy1New
+	and	#%10000000						; A button
 	beq	+
 	jsr	FadeOutMusic
 +

@@ -452,7 +452,8 @@ msg_Warning:
 	PrintString "your SNES PowerPak!\n\n"
 	PrintString "Reflashing takes about five seconds to complete,\n"
 	PrintString "after which your SNES will reset automatically.\n\n"
-	PrintString "Press the (A) button to proceed ..."
+;	PrintString "Press the (A) button to proceed ..."
+	PrintString "Press the (Y) button to proceed ..."
 
 	stz Joy1Press				; reset input buttons
 	stz Joy1Press+1
@@ -461,11 +462,13 @@ msg_Warning:
 
 -	wai
 
-	lda Joy1New				; wait for user input
-	and #%10000000				; A button
+;	lda Joy1New				; wait for user input
+;	and #%10000000				; A button
+	lda Joy1New+1				; wait for user input
+	and #%01000000				; Y button
 	beq -
 
-	SetCursorPos 18, 0			; overwrite "Press the (A) button ..." message
+	SetCursorPos 18, 0			; overwrite "Press the (Y) button ..." message
 	PrintString "FLASHING IN PROGRESS, PLEASE WAIT ..."
 
 	wai					; wait for the message to appear on the screen

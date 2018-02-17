@@ -107,8 +107,10 @@ GotoGameOptions:
 
 PlayLoop:
 	wai
-	lda	Joy1New							; check for A button = start game
-	and	#%10000000
+;	lda	Joy1New							; check for A button = start game
+;	and	#%10000000
+	lda	Joy1New+1						; check for Y button = start game
+	and	#%01000000
 	bne	+
 	lda	Joy1New+1						; check for Start button = ditto
 	and	#%00010000
@@ -158,8 +160,10 @@ __SelectCheck1Done:
 
 SaveRAMLoop:
 	wai
-	lda	Joy1New							; check for A button = launch SRAM browser
-	and	#%10000000
+;	lda	Joy1New							; check for A button = launch SRAM browser
+;	and	#%10000000
+	lda	Joy1New+1						; check for Y button = launch SRAM browser
+	and	#%01000000
 	beq	__ACheck2Done
 	jsr	SpriteMessageLoading
 	jsr	InitSRMBrowser						; go to SRAM browser
@@ -210,8 +214,10 @@ __SelectCheck2Done:
 
 LoadGGCodeLoop:
 	wai
-	lda	Joy1New							; check for A button
-	and	#%10000000
+;	lda	Joy1New							; check for A button
+;	and	#%10000000
+	lda	Joy1New+1						; check for Y button
+	and	#%01000000
 	bne	+
 	jmp	__ACheck3Done
 
@@ -289,6 +295,7 @@ __SelectCheck3Done:
 
 ; ************************* Edit GG codes loop *************************
 
+; FIXME Y button conversion
 EditGGCodeLoop:
 	wai
 	lda	Joy1Press						; check for A/X button

@@ -7,7 +7,12 @@
 |
 ===========================================================================================
 
-
+CHANGES IN V3.05 (Minor mods by Gammy)
+______________________________________________________________________
+- New linux/*NIX build scripts
+- Change the button mappings so that Y is used rather than A. This fits nicely
+  with the Analog Super NT menu.
+- Some new themes.
 
 CHANGES IN V3.00 "MUFASA" BUILD #11331 (RELEASED APRIL 29, 2016):
 ______________________________________________________________________

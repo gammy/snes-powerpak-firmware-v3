@@ -1,6 +1,8 @@
 ;==========================================================================================
 ;
 ;   UNOFFICIAL SNES POWERPAK FIRMWARE V3.00 (CODENAME: "MUFASA")
+;   This fork has its codename changed to "BOVRIL", although
+;   internally, the MUFASA codename is still considered to be compatible.
 ;   (c) 2012-2016 by ManuLöwe (http://manuloewe.de/)
 ;
 ;	*** MAIN BOOTLOADER ROM LAYOUT ***
@@ -123,13 +125,16 @@ STR_Firmware_VerNum_End:
 	.DB " "
 
 STR_Firmware_Codename:
+	.DB "\"BOVRIL\"", 0
+
+STR_Firmware_Codename_Signature:
 	.DB "\"MUFASA\"", 0
 
 STR_Firmware_Build:
 	.DB "Build #"
 
 STR_Firmware_BuildNum:
-	.DB "11362"							; IdentifierCommentForBuildNumAutoBump (do not remove this comment)
+	.DB "11370"							; IdentifierCommentForBuildNumAutoBump (do not remove this comment)
 
 STR_Firmware_BuildNum_End:
 	.DB 0

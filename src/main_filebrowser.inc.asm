@@ -281,9 +281,11 @@ __FileBrowserRCheckDone:
 
 
 
-; -------------------------- check for A button = select file / load dir
-	lda	Joy1New
-	and	#%10000000
+; -------------------------- check for Y button = select file / load dir
+;	lda	Joy1New
+;	and	#%10000000						; A button
+	lda	Joy1New+1
+	and	#%01000000						; Y button
 	beq	__FileBrowserACheckDone
 
 __FileBrowserAorStartPressed:

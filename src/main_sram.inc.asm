@@ -138,8 +138,10 @@ SRAMQuestionsLoop:
 
 
 ; -------------------------- check for A button = make a selection
-	lda	Joy1New
-	and	#%10000000
+;	lda	Joy1New
+;	and	#%10000000						; A button
+	lda	Joy1New+1
+	and	#%01000000						; Y button
 	bne	__SRAMSelectionMade
 
 

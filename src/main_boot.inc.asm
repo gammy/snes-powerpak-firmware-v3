@@ -470,7 +470,7 @@ GotoIntroScreen:
 	jsr	GameGenieClearAll					; clear out Game Genie codes
 
 	SetCursorPos 18, 19
-	PrintString "Choose file ..."
+	PrintString "File browser"
 	SetCursorPos 20, 19
 	PrintString "Settings"
 	SetCursorPos 22, 19
@@ -483,7 +483,8 @@ GotoIntroScreen:
 
 	lda	#$9898							; Y, X
 	sta	SpriteBuf1.Buttons
-	lda	#$03A0							; tile properties, tile num for A button
+;	lda	#$03A0							; tile properties, tile num for A button
+	lda	#$03A4							; tile properties, tile num for Y button
 	sta	SpriteBuf1.Buttons+2
 	lda	#$A898							; Y, X
 	sta	SpriteBuf1.Buttons+4
@@ -550,9 +551,11 @@ IntroLoop:
 
 
 
-; -------------------------- check for A button = go to ROM browser
-	lda	Joy1New
-	and	#%10000000
+; -------------------------- check for Y button = go to ROM browser
+;	lda	Joy1New
+;	and	#%10000000						; A button
+	lda	Joy1New+1
+	and	#%01000000						; Y button
 	beq	+
 	jsr	SpriteMessageLoading
 	jmp	InitROMBrowser
