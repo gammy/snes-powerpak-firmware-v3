@@ -34,7 +34,7 @@ __ReturnFromMenuSection:
 	SetCursorPos 11,  7
 	PrintString "Select a theme ..."
 	SetCursorPos 12,  7
-	PrintString "View v3.00 developer's note"
+	PrintString "View developer's note"
 	SetCursorPos 13,  7
 	PrintString "Check for firmware update"
 
@@ -45,7 +45,8 @@ __ReturnFromMenuSection:
 
 	lda	#$9898							; Y, X
 	sta	SpriteBuf1.Buttons
-	lda	#$03A0							; tile properties, tile num for A button
+;	lda	#$03A0							; tile properties, tile num for A button
+	lda	#$03A4							; tile properties, tile num for Y button
 	sta	SpriteBuf1.Buttons+2
 	lda	#$A898							; Y, X
 	sta	SpriteBuf1.Buttons+4

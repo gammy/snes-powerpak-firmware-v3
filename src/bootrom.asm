@@ -134,7 +134,7 @@ STR_Firmware_Build:
 	.DB "Build #"
 
 STR_Firmware_BuildNum:
-	.DB "11370"							; IdentifierCommentForBuildNumAutoBump (do not remove this comment)
+	.DB "11376"							; IdentifierCommentForBuildNumAutoBump (do not remove this comment)
 
 STR_Firmware_BuildNum_End:
 	.DB 0

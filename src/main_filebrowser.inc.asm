@@ -584,6 +584,18 @@ PrintPage:
 	php
 
 	Accu16
+; -------------------------- show mosaic effect
+;	lda	#$93							; enable mosaic on BG1 & BG2, start with block size 9
+;-	sta	$2106
+;	wai								; show mosaic for one frame
+;	sec
+;	sbc	#$10							; reduce block size by 1
+;	cmp	#$F3							; smallest block size ($03) processed on last iteration?
+;	bne	-
+;
+;	stz	$2106							; turn off mosaic effect
+; -----------------------------------------------------------------------------
+
 
 	pei	(selectedEntry)						; preserve selectedEntry (16 bit)
 

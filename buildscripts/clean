@@ -3,7 +3,7 @@ source paths.inc || exit 1
 
 (
     cd $path_src
-    rm *.lst *.sfc *.sym *.tmp *.usage > /dev/null 2>&1
+    rm *.lst *.sfc *.sym *.tmp *.usage *.o > /dev/null 2>&1
     cd $path_out
     rm Valid.ext *.log *.usage > /dev/null 2>&1
 )

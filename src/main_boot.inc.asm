@@ -534,7 +534,6 @@ GotoIntroScreen:
 	bne	-
 
 
-
 ; ***************************** Intro Loop *****************************
 
 IntroLoop:

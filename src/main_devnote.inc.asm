@@ -107,7 +107,8 @@ GotoDevNote:
 
 	lda	#$B014							; Y, X
 	sta	SpriteBuf1.Buttons
-	lda	#$03A0							; tile properties, tile num for A button
+;	lda	#$03A0							; tile properties, tile num for A button
+	lda	#$03A4							; tile properties, tile num for Y button
 	sta	SpriteBuf1.Buttons+2
 	lda	#$C014							; Y, X
 	sta	SpriteBuf1.Buttons+4
@@ -115,7 +116,8 @@ GotoDevNote:
 	sta	SpriteBuf1.Buttons+6
 	lda	#$C020							; Y, X
 	sta	SpriteBuf1.Buttons+8
-	lda	#$03A4							; tile properties, tile num for Y button
+;	lda	#$03A4							; tile properties, tile num for Y button
+	lda	#$03A0							; tile properties, tile num for A button
 	sta	SpriteBuf1.Buttons+10
 	lda	#$B04E							; Y, X
 	sta	SpriteBuf1.Buttons+12

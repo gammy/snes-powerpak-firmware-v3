@@ -11,6 +11,7 @@
 
    KNOWN ISSUES IN V3.00:
 ______________________________________________________________________
+- The theme loader sometimes "forgets" to load certain items, such as the button graphics, when returning from the developer's notes, and so on.
 
 - The game "Pilotwings" doesn't work even with a DSP1 chip installed in your PowerPak. This bug has been known since v1.0X. It's most likely related to there being different hardware revisions of the chip and/or the PowerPak hardware not supporting LoROM DSP1 games properly. Note that you might get the game to run using a very small CF card (<500 MB), but in effect, this is a pure matter of luck.
 
