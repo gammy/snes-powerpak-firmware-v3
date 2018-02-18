@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+
+echo
+echo "This script will build ManuLöwe's original themes."
+echo "Use 'buildscripts/build_theme' to build new ones (i.e 'gammy')"
+echo
+
+for theme in fourdots mario mufasa retrousb simba
+do
+	echo "Generating ${theme}.THM"
+	cat $(ls -1 $theme/${theme}??.bin | sort -n) > ${theme}.THM
+done
