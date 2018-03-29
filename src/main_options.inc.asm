@@ -298,68 +298,154 @@ __SelectCheck3Done:
 ; FIXME Y button conversion
 EditGGCodeLoop:
 	wai
-	lda	Joy1Press						; check for A/X button
-	and	#%11000000
-	beq	__AXCheckDone
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;	lda	Joy1Press						; check for A/X button
+;	and	#%11000000
+;	beq	__AXCheckDone
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+	lda	Joy1Press						; check for X
+	and	#%01000000
+	beq	__YXCheckDone
 
-__AXPressed:
+	lda	Joy1Press+1						; check for Y
+	and	#%01000000
+	beq	__YXCheckDone
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+;__AXPressed:
+__YXPressed:
 	jsr	GGCodeIncChar
-	lda	Joy1Old
-	and	#%11000000
-	bne	__AXHeld
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;	lda	Joy1Old							; AX check
+;	and	#%11000000
+;	bne	__AXHeld
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+	lda	Joy1Old							; X check
+	and	#%01000000
+	bne	__YXHeld
+
+	lda	Joy1Old+1						; Y check
+	and	#%01000000
+	bne	__YXHeld
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 	ldx	#$000E							; 14 frames
 -	wai
-	lda	Joy1
-	and	#%11000000
-	beq	__AXCheckDone
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;	lda	Joy1
+;	and	#%11000000
+;	beq	__AXCheckDone
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+	lda	Joy1							; X check
+	and	#%01000000
+	beq	__YXCheckDone
+
+	lda	Joy1+1							; Y check
+	and	#%01000000
+	beq	__YXCheckDone
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 	dex
-	bne	-
+	bne	-							; Wait loop!
 
-	bra	__AXPressed
+	bra	__YXPressed
 
-__AXHeld:
+;__AXHeld:
+__YXHeld:
 	ldx	#$0003							; 3 frames
 -	wai
-	lda	Joy1
-	and	#%11000000
-	beq	__AXCheckDone
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;	lda	Joy1							; AX check
+;	and	#%11000000
+;	beq	__AXCheckDone
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+	lda	Joy1							; X check
+	and	#%01000000
+	beq	__YXCheckDone
+
+	lda	Joy1+1							; Y check
+	and	#%01000000
+	beq	__YXCheckDone
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 	dex
 	bne	-
 
-	bra	__AXPressed
+	bra	__YXPressed
 
-__AXCheckDone:
-	lda	Joy1Press+1						; check for B/Y button
-	and	#%11000000
-	beq	__BYCheckDone
+;__AXCheckDone:
+__YXCheckDone:
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;	lda	Joy1Press+1						; check for B/Y button
+;	and	#%11000000
+;	beq	__BYCheckDone
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+	lda	Joy1Press						; check for A button
+	and	#%10000000
+	beq	__BACheckDone
 
-__BYPressed:
+	lda	Joy1Press+1						; check for B button
+	and	#%10000000
+	beq	__BACheckDone
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+;__BYPressed:
+__BAPressed:
 	jsr	GGCodeDecChar
-	lda	Joy1Old+1
-	and	#%11000000
-	bne	__BYHeld
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;	lda	Joy1Old+1						; BY check
+;	and	#%11000000
+;	bne	__BYHeld
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+	lda	Joy1Old							; A check
+	and	#%10000000
+	bne	__BAHeld
+
+	lda	Joy1Old+1						; B check
+	and	#%10000000
+	bne	__BAHeld
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 	ldx	#$000E							; 14 frames
 -	wai
-	lda	Joy1+1
-	and	#%11000000
-	beq	__BYCheckDone
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;	lda	Joy1+1
+;	and	#%11000000
+;	beq	__BYCheckDone
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+	lda	Joy1							; A check
+	and	#%10000000
+	beq	__BACheckDone
+
+	lda	Joy1+1							; B check
+	and	#%10000000
+	beq	__BACheckDone
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 	dex
 	bne	-
 
-	bra	__BYPressed
+	bra	__BAPressed
 
-__BYHeld:
+;__BYHeld:
+__BAHeld:
 	ldx	#$0003							; 3 frames
 -	wai
-	lda	Joy1+1
-	and	#%11000000
-	beq	__BYCheckDone
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;	lda	Joy1+1
+;	and	#%11000000
+;	beq	__BYCheckDone
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+	lda	Joy1							; A check
+	and	#%10000000
+	beq	__BACheckDone						; A not pressed
+
+	lda	Joy1+1							; B check
+	and	#%10000000
+	beq	__BACheckDone						; B not pressed
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 	dex
 	bne	-
 
-	bra	__BYPressed
+	bra	__BAPressed
 
-__BYCheckDone:
+;__BYCheckDone:
+__BACheckDone:
 	lda	Joy1New+1						; check for Start button = start game
 	and	#%00010000
 	beq	__StartCheck4Done
@@ -782,7 +868,8 @@ ShowHelpGeneral:
 
 	lda	#$B014							; Y, X
 	sta	SpriteBuf1.Buttons
-	lda	#$03A0							; tile properties, tile num for A button
+;	lda	#$03A0							; tile properties, tile num for A button
+	lda	#$03A4							; tile properties, tile num for Y button
 	sta	SpriteBuf1.Buttons+2
 	lda	#$F0F0							; Y, X (off-screen)
 	sta	SpriteBuf1.Buttons+4
@@ -794,7 +881,8 @@ ShowHelpGeneral:
 	sta	SpriteBuf1.Buttons+10
 	lda	#$F0F0							; Y, X (off-screen)
 	sta	SpriteBuf1.Buttons+12
-	lda	#$03A4							; tile properties, tile num for Y button
+	;lda	#$03A4							; tile properties, tile num for Y button
+	lda	#$03A0							; tile properties, tile num for A button
 	sta	SpriteBuf1.Buttons+14
 	lda	#$C030							; Y, X
 	sta	SpriteBuf1.Buttons+16
