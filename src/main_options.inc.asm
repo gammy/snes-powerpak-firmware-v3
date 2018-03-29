@@ -107,8 +107,6 @@ GotoGameOptions:
 
 PlayLoop:
 	wai
-;	lda	Joy1New							; check for A button = start game
-;	and	#%10000000
 	lda	Joy1New+1						; check for Y button = start game
 	and	#%01000000
 	bne	+
@@ -160,8 +158,6 @@ __SelectCheck1Done:
 
 SaveRAMLoop:
 	wai
-;	lda	Joy1New							; check for A button = launch SRAM browser
-;	and	#%10000000
 	lda	Joy1New+1						; check for Y button = launch SRAM browser
 	and	#%01000000
 	beq	__ACheck2Done
@@ -214,8 +210,6 @@ __SelectCheck2Done:
 
 LoadGGCodeLoop:
 	wai
-;	lda	Joy1New							; check for A button
-;	and	#%10000000
 	lda	Joy1New+1						; check for Y button
 	and	#%01000000
 	bne	+
@@ -295,156 +289,92 @@ __SelectCheck3Done:
 
 ; ************************* Edit GG codes loop *************************
 
-; FIXME Y button conversion
 EditGGCodeLoop:
 	wai
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;	lda	Joy1Press						; check for A/X button
-;	and	#%11000000
-;	beq	__AXCheckDone
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 	lda	Joy1Press						; check for X
 	and	#%01000000
-	beq	__YXCheckDone
-
+	bne	__YXPressed						; X is pressed
 	lda	Joy1Press+1						; check for Y
 	and	#%01000000
-	beq	__YXCheckDone
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+	beq	__YXCheckDone						; Y is not being pressed
 
-;__AXPressed:
 __YXPressed:
 	jsr	GGCodeIncChar
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;	lda	Joy1Old							; AX check
-;	and	#%11000000
-;	bne	__AXHeld
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 	lda	Joy1Old							; X check
 	and	#%01000000
-	bne	__YXHeld
-
+	bne	__YXHeld						; X is held
 	lda	Joy1Old+1						; Y check
 	and	#%01000000
-	bne	__YXHeld
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+	bne	__YXHeld						; Y is held
 	ldx	#$000E							; 14 frames
 -	wai
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;	lda	Joy1
-;	and	#%11000000
-;	beq	__AXCheckDone
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 	lda	Joy1							; X check
 	and	#%01000000
-	beq	__YXCheckDone
-
+	bne	+							; X is being pressed
 	lda	Joy1+1							; Y check
 	and	#%01000000
-	beq	__YXCheckDone
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-	dex
+	beq	__YXCheckDone						; Y is not being pressed
++	dex
 	bne	-							; Wait loop!
-
 	bra	__YXPressed
 
-;__AXHeld:
 __YXHeld:
 	ldx	#$0003							; 3 frames
 -	wai
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;	lda	Joy1							; AX check
-;	and	#%11000000
-;	beq	__AXCheckDone
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 	lda	Joy1							; X check
 	and	#%01000000
-	beq	__YXCheckDone
-
+	bne	+							; X is being held
 	lda	Joy1+1							; Y check
 	and	#%01000000
-	beq	__YXCheckDone
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-	dex
+	beq	__YXCheckDone						; Y is not being held
++	dex
 	bne	-
 
 	bra	__YXPressed
 
-;__AXCheckDone:
 __YXCheckDone:
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;	lda	Joy1Press+1						; check for B/Y button
-;	and	#%11000000
-;	beq	__BYCheckDone
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 	lda	Joy1Press						; check for A button
 	and	#%10000000
-	beq	__BACheckDone
-
+	bne	__BAPressed						; A is being pressed
 	lda	Joy1Press+1						; check for B button
 	and	#%10000000
-	beq	__BACheckDone
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+	beq	__BACheckDone						; B is not being pressed
 
-;__BYPressed:
 __BAPressed:
 	jsr	GGCodeDecChar
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;	lda	Joy1Old+1						; BY check
-;	and	#%11000000
-;	bne	__BYHeld
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 	lda	Joy1Old							; A check
 	and	#%10000000
-	bne	__BAHeld
-
+	bne	__BAHeld						; A is pressed
 	lda	Joy1Old+1						; B check
 	and	#%10000000
-	bne	__BAHeld
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+	bne	__BAHeld						; B is pressed
 	ldx	#$000E							; 14 frames
 -	wai
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;	lda	Joy1+1
-;	and	#%11000000
-;	beq	__BYCheckDone
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 	lda	Joy1							; A check
 	and	#%10000000
-	beq	__BACheckDone
-
+	bne	+							; A is being pressed
 	lda	Joy1+1							; B check
 	and	#%10000000
-	beq	__BACheckDone
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-	dex
+	beq	__BACheckDone						; B is not being presse
++	dex
 	bne	-
 
 	bra	__BAPressed
 
-;__BYHeld:
 __BAHeld:
 	ldx	#$0003							; 3 frames
 -	wai
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;	lda	Joy1+1
-;	and	#%11000000
-;	beq	__BYCheckDone
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 	lda	Joy1							; A check
 	and	#%10000000
-	beq	__BACheckDone						; A not pressed
-
+	bne	+							; A pressed
 	lda	Joy1+1							; B check
 	and	#%10000000
 	beq	__BACheckDone						; B not pressed
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-	dex
++	dex
 	bne	-
 
 	bra	__BAPressed
 
-;__BYCheckDone:
 __BACheckDone:
 	lda	Joy1New+1						; check for Start button = start game
 	and	#%00010000
@@ -868,7 +798,6 @@ ShowHelpGeneral:
 
 	lda	#$B014							; Y, X
 	sta	SpriteBuf1.Buttons
-;	lda	#$03A0							; tile properties, tile num for A button
 	lda	#$03A4							; tile properties, tile num for Y button
 	sta	SpriteBuf1.Buttons+2
 	lda	#$F0F0							; Y, X (off-screen)
